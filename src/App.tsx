@@ -9,7 +9,7 @@ import type { FlowGraph } from './models/graph';
 
 function toRF(graph: FlowGraph): { nodes: Node[]; edges: Edge[] } {
   return {
-    nodes: graph.nodes.map(n => ({ id: n.id, type: 'default', position: n.position, data: { label: n.data.label }, style: { background: NODE_COLORS[n.type], color: '#fff', border: 'none', borderRadius: 8, padding: 8 } })),
+    nodes: graph.nodes.map(n => ({ id: n.id, type: 'default', position: n.position, data: { label: n.data.label }, style: { background: NODE_COLORS[n.type], color: '#fff', border: 'none', borderRadius: n.type === 'decision' ? 0 : 8, padding: 10, clipPath: n.type === 'decision' ? 'polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%)' : undefined, minWidth: 120, textAlign: 'center' as any } })),
     edges: graph.edges.map(e => ({ id: e.id, source: e.source, target: e.target, label: e.label, animated: true })),
   };
 }
@@ -63,8 +63,7 @@ export default function App() {
       <div style={{ padding: 8, background: '#1e293b', color: '#fff', display: 'flex', gap: 8, alignItems: 'center' }}>
         <strong>Flowchart Designer (Demo/Mock)</strong>
         <button onClick={regenerate}>Generate</button>
-        <button onClick={exportJSON}>⬇ Export JSON</button>
-        <button onClick={() => { const r = toRF(graph); setNodes(r.nodes); setEdges(r.edges); }}>🔄 Original</button>
+        <button onClick={exportJSON}>⬇ Download</button>
         <label style={{ cursor: 'pointer' }}>Import JSON<input type="file" accept="application/json" onChange={importJSON} style={{ display: 'none' }} /></label>
       </div>
       <div style={{ flex: 1, display: 'flex' }}>
