@@ -63,7 +63,7 @@ export default function App() {
       <div style={{ padding: 8, background: '#1e293b', color: '#fff', display: 'flex', gap: 8, alignItems: 'center' }}>
         <strong>Flowchart Designer (Demo/Mock)</strong>
         <button onClick={regenerate}>Generate</button>
-        <button onClick={exportJSON}>Export JSON</button>
+        <button onClick={exportJSON}>⬇ Export JSON</button>
         <label style={{ cursor: 'pointer' }}>Import JSON<input type="file" accept="application/json" onChange={importJSON} style={{ display: 'none' }} /></label>
       </div>
       <div style={{ flex: 1, display: 'flex' }}>
