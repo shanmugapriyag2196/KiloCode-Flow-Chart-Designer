@@ -1,4 +1,4 @@
-export type NodeType = 'start' | 'end' | 'process' | 'decision' | 'inputOutput' | 'connector';
+export type NodeType = 'start' | 'end' | 'process' | 'decision' | 'inputOutput' | 'connector' | 'notification' | 'success';
 
 export interface FlowNodeData {
   label: string;
@@ -26,9 +26,11 @@ export interface FlowGraph {
 
 export const NODE_COLORS: Record<NodeType, string> = {
   start: '#22c55e',
-  end: '#ef4444',
+  end: '#22c55e',
   process: '#3b82f6',
   decision: '#f59e0b',
-  inputOutput: '#8b5cf6',
-  connector: '#64748b',
+  inputOutput: '#06b6d4',
+  connector: '#a855f7',
+  notification: '#ec4899',
+  success: '#16a34a',
 };
