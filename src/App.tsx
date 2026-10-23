@@ -64,6 +64,7 @@ export default function App() {
         <strong>Flowchart Designer (Demo/Mock)</strong>
         <button onClick={regenerate}>Generate</button>
         <button onClick={exportJSON}>⬇ Export JSON</button>
+        <button onClick={() => { const r = toRF(graph); setNodes(r.nodes); setEdges(r.edges); }}>🔄 Original</button>
         <label style={{ cursor: 'pointer' }}>Import JSON<input type="file" accept="application/json" onChange={importJSON} style={{ display: 'none' }} /></label>
       </div>
       <div style={{ flex: 1, display: 'flex' }}>
