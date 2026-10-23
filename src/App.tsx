@@ -58,7 +58,7 @@ export default function App() {
           {selected && <div style={{ background: 'rgba(255,255,255,.15)', padding: 8, borderRadius: 8 }}><b>Selected:</b> {String((selected.data as any)?.label)}</div>}
         </div>
         <div style={{ flex: 1, borderRadius: 12, overflow: 'auto', boxShadow: '0 8px 24px rgba(0,0,0,.4)' }} ref={containerRef}>
-          <ReactFlow nodes={nodes} edges={edges} onNodesChange={onNodesChange} onEdgesChange={onEdgesChange} onConnect={onConnect} onNodeClick={(_, n) => setSelected(n)} fitView>
+          <ReactFlow nodes={nodes} edges={edges} onNodesChange={onNodesChange} onEdgesChange={onEdgesChange} onConnect={onConnect} onNodeClick={(_, n) => setSelected(n)} fitView proOptions={{ hideAttribution: true }}>
             <Background />
           </ReactFlow>
         </div>
