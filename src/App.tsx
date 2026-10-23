@@ -47,7 +47,7 @@ export default function App() {
   return (
     <div style={{ height: '100vh', display: 'flex', flexDirection: 'column', background: 'linear-gradient(135deg,#0f172a,#1e293b)', color: '#fff' }}>
       <div style={{ padding: 12, background: 'linear-gradient(90deg,#6366f1,#ec4899)', display: 'flex', gap: 10, alignItems: 'center', boxShadow: '0 4px 12px rgba(0,0,0,.3)' }}>
-        <strong style={{ fontSize: 18 }}>🌈 Flowchart Designer (Demo/Mock)</strong>
+        <strong style={{ fontSize: 18, display: 'flex', alignItems: 'center', gap: 8 }}><img src="/Value-Global.png" alt="VG" style={{ height: 28 }} /> VG Flowchart Designer (Demo/Mock)</strong>
         <button onClick={regenerate} style={{ background: '#22c55e', color: '#fff', border: 'none', padding: '6px 12px', borderRadius: 8 }}>Generate</button>
         <button onClick={downloadImage} style={{ background: '#f59e0b', color: '#fff', border: 'none', padding: '6px 12px', borderRadius: 8 }}>⬇ Download PNG</button>
       </div>
