@@ -20,7 +20,7 @@ export default function App() {
   const [nodes, setNodes] = useState<Node[]>(() => toRF(graph).nodes);
   const [edges, setEdges] = useState<Edge[]>(() => toRF(graph).edges);
   const [errors, setErrors] = useState<string[]>([]);
-const containerRef = useRef<HTMLDivElement>(null);
+const [selected, setSelected] = useState<Node | null>(null);
   const downloadImage = async () => {
     if (!containerRef.current) return;
     const dataUrl = await toPng(containerRef.current, { cacheBust: true });
