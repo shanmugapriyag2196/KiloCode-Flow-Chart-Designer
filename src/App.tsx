@@ -10,7 +10,7 @@ import { toPng } from 'html-to-image';
 
 function toRF(graph: FlowGraph): { nodes: Node[]; edges: Edge[] } {
   return {
-    nodes: graph.nodes.map(n => ({ id: n.id, type: 'default', position: n.position, data: { label: n.data.label }, style: { background: NODE_COLORS[n.type], color: '#fff', border: 'none', borderRadius: n.type === 'start' || n.type === 'end' ? 999 : (n.type === 'decision' ? 0 : 8), padding: 10, clipPath: n.type === 'decision' ? 'polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)' : undefined, minWidth: 120, textAlign: 'center' as any } })),
+    nodes: graph.nodes.map(n => ({ id: n.id, type: 'default', position: n.position, data: { label: n.data.label }, style: { background: NODE_COLORS[n.type], color: '#fff', border: 'none', borderRadius: n.type === 'start' || n.type === 'end' ? 999 : (n.type === 'decision' ? 0 : 8), padding: 10, clipPath: n.type === 'decision' ? 'polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)' : undefined, minWidth: 120, textAlign: 'center' as any, fontWeight: 600, fontSize: 13, whiteSpace: 'normal' as any, lineHeight: 1.2 } })),
     edges: graph.edges.map(e => ({ id: e.id, source: e.source, target: e.target, label: e.label, animated: true, style: { stroke: '#f472b6', strokeWidth: 2 } })),
   };
 }
