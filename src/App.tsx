@@ -5,6 +5,7 @@ import { mockGenerate } from './services/mockGenerator';
 import { validateGraph } from './services/validation';
 import { autoLayout } from './services/layout';
 import { toPng } from 'html-to-image';
+import { NODE_COLORS } from './models/graph';
 import type { FlowGraph } from './models/graph';
 
 function toRF(graph: FlowGraph): { nodes: Node[]; edges: Edge[] } {
