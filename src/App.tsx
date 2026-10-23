@@ -21,6 +21,7 @@ export default function App() {
   const [edges, setEdges] = useState<Edge[]>(() => toRF(graph).edges);
   const [errors, setErrors] = useState<string[]>([]);
 const [selected, setSelected] = useState<Node | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const downloadImage = async () => {
     if (!containerRef.current) return;
     const dataUrl = await toPng(containerRef.current, { cacheBust: true });
@@ -41,13 +42,7 @@ const [selected, setSelected] = useState<Node | null>(null);
   const onEdgesChange = useCallback((c: EdgeChange[]) => setEdges(eds => applyEdgeChanges(c, eds)), []);
   const onConnect = useCallback((conn: Connection) => setEdges(eds => addEdge({ ...conn, id: `e${conn.source}-${conn.target}` }, eds)), []);
 
-  const exportJSON = () => {
-    const blob = new Blob([JSON.stringify({ nodes, edges }, null, 2)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url; a.download = 'flowchart.json'; a.click();
-    URL.revokeObjectURL(url);
-  };
+
 
   const importJSON = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
