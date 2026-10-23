@@ -1,5 +1,5 @@
 import { useState, useCallback, useRef } from 'react';
-import { ReactFlow, applyNodeChanges, applyEdgeChanges, addEdge, Background, Controls, MiniMap, type Node, type Edge, type NodeChange, type EdgeChange, type Connection } from '@xyflow/react';
+import { ReactFlow, applyNodeChanges, applyEdgeChanges, addEdge, Background, type Node, type Edge, type NodeChange, type EdgeChange, type Connection } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import { mockGenerate } from './services/mockGenerator';
 import { validateGraph } from './services/validation';
