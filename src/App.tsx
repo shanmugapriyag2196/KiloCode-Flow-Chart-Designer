@@ -39,7 +39,7 @@ export default function App() {
 
   const downloadImage = async () => {
     if (!containerRef.current) return;
-    const dataUrl = await toPng(containerRef.current, { cacheBust: true, width: containerRef.current.scrollWidth, height: containerRef.current.scrollHeight });
+    const dataUrl = await toPng(containerRef.current, { cacheBust: true, width: 4000, height: 4000 });
     const a = document.createElement('a');
     a.href = dataUrl; a.download = 'flowchart.png'; a.click();
   };
