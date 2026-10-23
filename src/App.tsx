@@ -47,21 +47,19 @@ export default function App() {
   return (
     <div style={{ height: '100vh', display: 'flex', flexDirection: 'column', background: 'linear-gradient(135deg,#0f172a,#1e293b)', color: '#fff' }}>
       <div style={{ padding: 12, background: 'linear-gradient(90deg,#6366f1,#ec4899)', display: 'flex', gap: 10, alignItems: 'center', boxShadow: '0 4px 12px rgba(0,0,0,.3)' }}>
-        <strong style={{ fontSize: 18, display: 'flex', alignItems: 'center', gap: 8 }}><img src="/Value-Global.png" alt="VG" style={{ height: 28 }} /> VG Flowchart Designer (Demo/Mock)</strong>
+        <strong style={{ fontSize: 18, display: 'flex', alignItems: 'center', gap: 8 }}><img src="/Value-Global.png" alt="VG" style={{ height: 28 }} /> VG Flowchart Designer</strong>
         <button onClick={regenerate} style={{ background: '#22c55e', color: '#fff', border: 'none', padding: '6px 12px', borderRadius: 8 }}>Generate</button>
         <button onClick={downloadImage} style={{ background: '#f59e0b', color: '#fff', border: 'none', padding: '6px 12px', borderRadius: 8 }}>⬇ Download PNG</button>
       </div>
       <div style={{ flex: 1, display: 'flex', gap: 12, padding: 12 }}>
         <div style={{ width: 300, padding: 12, background: 'rgba(255,255,255,.08)', borderRadius: 12, display: 'flex', flexDirection: 'column', gap: 10, backdropFilter: 'blur(8px)' }}>
-          <textarea value={input} onChange={e => setInput(e.target.value)} style={{ flex: 1, borderRadius: 8, border: 'none', padding: 8 }} />
+          <textarea value={input} onChange={e => setInput(e.target.value)} style={{ flex: 1, borderRadius: 8, border: 'none', padding: 8, color: '#000', background: '#fff' }} />
           <div style={{ color: '#fca5a5', fontSize: 12 }}>{errors.join('; ')}</div>
           {selected && <div style={{ background: 'rgba(255,255,255,.15)', padding: 8, borderRadius: 8 }}><b>Selected:</b> {String((selected.data as any)?.label)}</div>}
         </div>
         <div style={{ flex: 1, borderRadius: 12, overflow: 'hidden', boxShadow: '0 8px 24px rgba(0,0,0,.4)' }} ref={containerRef}>
           <ReactFlow nodes={nodes} edges={edges} onNodesChange={onNodesChange} onEdgesChange={onEdgesChange} onConnect={onConnect} onNodeClick={(_, n) => setSelected(n)} fitView>
             <Background />
-            <Controls />
-            <MiniMap />
           </ReactFlow>
         </div>
       </div>
