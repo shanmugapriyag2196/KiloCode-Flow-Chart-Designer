@@ -1,10 +1,10 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef } from 'react';
 import { ReactFlow, applyNodeChanges, applyEdgeChanges, addEdge, Background, Controls, MiniMap, type Node, type Edge, type NodeChange, type EdgeChange, type Connection } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import { mockGenerate } from './services/mockGenerator';
 import { validateGraph } from './services/validation';
 import { autoLayout } from './services/layout';
-import { NODE_COLORS } from './models/graph';
+import { toPng } from 'html-to-image';
 import type { FlowGraph } from './models/graph';
 
 function toRF(graph: FlowGraph): { nodes: Node[]; edges: Edge[] } {
@@ -20,7 +20,13 @@ export default function App() {
   const [nodes, setNodes] = useState<Node[]>(() => toRF(graph).nodes);
   const [edges, setEdges] = useState<Edge[]>(() => toRF(graph).edges);
   const [errors, setErrors] = useState<string[]>([]);
-  const [selected, setSelected] = useState<Node | null>(null);
+const containerRef = useRef<HTMLDivElement>(null);
+  const downloadImage = async () => {
+    if (!containerRef.current) return;
+    const dataUrl = await toPng(containerRef.current, { cacheBust: true });
+    const a = document.createElement('a');
+    a.href = dataUrl; a.download = 'flowchart.png'; a.click();
+  };
 
   const regenerate = useCallback(() => {
     const g = autoLayout(mockGenerate(input));
@@ -63,7 +69,7 @@ export default function App() {
       <div style={{ padding: 8, background: '#1e293b', color: '#fff', display: 'flex', gap: 8, alignItems: 'center' }}>
         <strong>Flowchart Designer (Demo/Mock)</strong>
         <button onClick={regenerate}>Generate</button>
-        <button onClick={exportJSON}>⬇ Download</button>
+        <button onClick={downloadImage}>⬇ Download PNG</button>
         <label style={{ cursor: 'pointer' }}>Import JSON<input type="file" accept="application/json" onChange={importJSON} style={{ display: 'none' }} /></label>
       </div>
       <div style={{ flex: 1, display: 'flex' }}>
@@ -72,7 +78,7 @@ export default function App() {
           <div style={{ color: 'red', fontSize: 12 }}>{errors.join('; ')}</div>
           {selected && <div><b>Selected:</b> {String((selected.data as any)?.label)}</div>}
         </div>
-        <div style={{ flex: 1 }}>
+        <div style={{ flex: 1 }} ref={containerRef}>
           <ReactFlow nodes={nodes} edges={edges} onNodesChange={onNodesChange} onEdgesChange={onEdgesChange} onConnect={onConnect} onNodeClick={(_, n) => setSelected(n)} fitView>
             <Background />
             <Controls />
