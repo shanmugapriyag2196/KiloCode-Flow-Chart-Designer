@@ -1,34 +1,16 @@
+import dagre from '@dagrejs/dagre';
 import type { FlowGraph } from '../models/graph';
 
 export function autoLayout(graph: FlowGraph): FlowGraph {
-  const adj = new Map<string, { target: string; label?: string }[]>();
-  for (const n of graph.nodes) adj.set(n.id, []);
-  for (const e of graph.edges) adj.get(e.source)?.push({ target: e.target, label: e.label });
-
-  const depth = new Map<string, number>();
-  const offset = new Map<string, number>();
-  const roots = graph.nodes.filter(n => n.type === 'start').map(n => n.id);
-  if (!roots.length && graph.nodes.length) roots.push(graph.nodes[0].id);
-  const queue: string[] = [...roots];
-  for (const r of roots) { depth.set(r, 0); offset.set(r, 0); }
-  while (queue.length) {
-    const cur = queue.shift()!;
-    const d = depth.get(cur) || 0;
-    const o = offset.get(cur) || 0;
-    for (const { target, label } of adj.get(cur) || []) {
-      if (!depth.has(target)) {
-        depth.set(target, d + 1);
-        let newOff = o;
-        if (label?.toLowerCase() === 'yes') newOff = o + 200;
-        else if (label?.toLowerCase() === 'no') newOff = o - 200;
-        offset.set(target, newOff);
-        queue.push(target);
-      }
-    }
-  }
-  const nodes = graph.nodes.map(n => ({
-    ...n,
-    position: { x: 300 + (offset.get(n.id) || 0), y: (depth.get(n.id) || 0) * 150 },
-  }));
+  const g = new dagre.graphlib.Graph();
+  g.setDefaultEdgeLabel(() => ({}));
+  g.setGraph({ rankdir: 'TB', nodesep: 60, ranksep: 80 });
+  for (const n of graph.nodes) g.setNode(n.id, { width: 140, height: 60 });
+  for (const e of graph.edges) g.setEdge(e.source, e.target);
+  dagre.layout(g);
+  const nodes = graph.nodes.map(n => {
+    const pos = g.node(n.id);
+    return { ...n, position: { x: pos.x - 70, y: pos.y - 30 } };
+  });
   return { nodes, edges: graph.edges };
 }

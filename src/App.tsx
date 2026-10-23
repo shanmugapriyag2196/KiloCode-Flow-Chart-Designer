@@ -49,7 +49,7 @@ export default function App() {
       <div style={{ padding: 12, background: 'linear-gradient(90deg,#6366f1,#ec4899)', display: 'flex', gap: 10, alignItems: 'center', boxShadow: '0 4px 12px rgba(0,0,0,.3)' }}>
         <strong style={{ fontSize: 18, display: 'flex', alignItems: 'center', gap: 8 }}><img src="/Value-Global.png" alt="VG" style={{ height: 28 }} /> VG Flowchart Designer</strong>
         <button onClick={regenerate} style={{ background: '#22c55e', color: '#fff', border: 'none', padding: '6px 12px', borderRadius: 8 }}>Generate</button>
-        <button onClick={downloadImage} style={{ background: '#f59e0b', color: '#fff', border: 'none', padding: '6px 12px', borderRadius: 8 }}>⬇ Download PNG</button>
+        <button onClick={() => (document.querySelector('.react-flow__controls-fitview') as HTMLButtonElement)?.click()} style={{ background: '#0ea5e9', color: '#fff', border: 'none', padding: '6px 12px', borderRadius: 8 }}>Fit Screen</button>
       </div>
       <div style={{ flex: 1, display: 'flex', gap: 12, padding: 12 }}>
         <div style={{ width: 300, padding: 12, background: 'rgba(255,255,255,.08)', borderRadius: 12, display: 'flex', flexDirection: 'column', gap: 10, backdropFilter: 'blur(8px)' }}>
