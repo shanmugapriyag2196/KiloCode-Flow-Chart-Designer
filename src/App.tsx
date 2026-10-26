@@ -7,6 +7,7 @@ import { autoLayout } from './services/layout';
 import { NODE_COLORS } from './models/graph';
 import type { FlowGraph } from './models/graph';
 import CustomNode from './components/CustomNode';
+import { toPng } from 'html-to-image';
 const nodeTypes = { custom: CustomNode };
 
 function toRF(graph: FlowGraph): { nodes: Node[]; edges: Edge[] } {
