@@ -6,11 +6,12 @@ import { validateGraph } from './services/validation';
 import { autoLayout } from './services/layout';
 import { NODE_COLORS } from './models/graph';
 import type { FlowGraph } from './models/graph';
-import { toPng } from 'html-to-image';
+import CustomNode from './components/CustomNode';
+const nodeTypes = { custom: CustomNode };
 
 function toRF(graph: FlowGraph): { nodes: Node[]; edges: Edge[] } {
   return {
-    nodes: graph.nodes.map(n => ({ id: n.id, type: 'default', position: n.position, data: { label: n.data.label }, style: { background: NODE_COLORS[n.type], color: '#fff', border: 'none', borderRadius: n.type === 'start' || n.type === 'end' ? 999 : (n.type === 'decision' ? 0 : 8), padding: 10, clipPath: n.type === 'decision' ? 'polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)' : undefined, minWidth: 120, textAlign: 'center' as any, fontWeight: 600, fontSize: 13, whiteSpace: 'normal' as any, lineHeight: 1.2 } })),
+    nodes: graph.nodes.map((n, i) => ({ id: n.id, type: 'custom', position: n.position, data: { label: n.data.label, bg: NODE_COLORS[n.type] + '22', border: NODE_COLORS[n.type], badge: i + 1 } })),
     edges: graph.edges.map(e => ({ id: e.id, source: e.source, target: e.target, label: e.label, animated: true, style: { stroke: '#f472b6', strokeWidth: 2 } })),
   };
 }
@@ -71,7 +72,7 @@ export default function App() {
           {selected && <div style={{ background: 'rgba(255,255,255,.15)', padding: 8, borderRadius: 8 }}><b>Selected:</b> {String((selected.data as any)?.label)}</div>}
         </div>
         <div style={{ flex: 1, borderRadius: 12, overflow: 'hidden', boxShadow: '0 8px 24px rgba(0,0,0,.4)' }} ref={containerRef}>
-          <ReactFlow nodes={nodes} edges={edges} onNodesChange={onNodesChange} onEdgesChange={onEdgesChange} onConnect={onConnect} onNodeClick={(_, n) => setSelected(n)} fitView proOptions={{ hideAttribution: true }}>
+          <ReactFlow nodes={nodes} edges={edges} nodeTypes={nodeTypes} onNodesChange={onNodesChange} onEdgesChange={onEdgesChange} onConnect={onConnect} onNodeClick={(_, n) => setSelected(n)} fitView proOptions={{ hideAttribution: true }}>
             <Background />
           </ReactFlow>
         </div>
