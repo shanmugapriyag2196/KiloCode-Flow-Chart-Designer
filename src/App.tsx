@@ -3,7 +3,6 @@ import { ReactFlow, applyNodeChanges, applyEdgeChanges, addEdge, Background, typ
 import '@xyflow/react/dist/style.css';
 import { mockGenerate } from './services/mockGenerator';
 import { validateGraph } from './services/validation';
-import { autoLayout } from './services/layout';
 import { NODE_COLORS } from './models/graph';
 import type { FlowGraph } from './models/graph';
 import CustomNode from './components/CustomNode';
