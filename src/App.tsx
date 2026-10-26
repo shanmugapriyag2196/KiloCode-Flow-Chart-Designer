@@ -13,7 +13,7 @@ const nodeTypes = { custom: CustomNode };
 function toRF(graph: FlowGraph): { nodes: Node[]; edges: Edge[] } {
   return {
     nodes: graph.nodes.map((n, i) => ({ id: n.id, type: 'custom', position: n.position, data: { label: n.data.label, bg: NODE_COLORS[n.type] + '22', border: NODE_COLORS[n.type], badge: i + 1 } })),
-    edges: graph.edges.map(e => ({ id: e.id, source: e.source, target: e.target, label: e.label, animated: true, markerEnd: { type: MarkerType.ArrowClosed }, style: { stroke: '#f472b6', strokeWidth: 2 } })),
+    edges: graph.edges.map(e => ({ id: e.id, source: e.source, target: e.target, label: e.label, animated: true, markerEnd: { type: MarkerType.ArrowClosed }, style: { stroke: e.label?.toLowerCase() === 'yes' ? '#22c55e' : e.label?.toLowerCase() === 'no' ? '#ef4444' : '#f472b6', strokeWidth: 2 } })),
   };
 }
 
