@@ -19,7 +19,7 @@ function toRF(graph: FlowGraph): { nodes: Node[]; edges: Edge[] } {
 
 export default function App() {
   const [input, setInput] = useState('Start process\nValidate input\nDecide approval?\nProcess request\nEnd');
-  const [graph, setGraph] = useState<FlowGraph>(() => autoLayout(mockGenerate('Start process\nValidate input\nDecide approval?\nProcess request\nEnd')));
+  const [graph, setGraph] = useState<FlowGraph>(() => mockGenerate('Start process'));
   const [nodes, setNodes] = useState<Node[]>(() => toRF(graph).nodes);
   const [edges, setEdges] = useState<Edge[]>(() => toRF(graph).edges);
   const [errors, setErrors] = useState<string[]>([]);
@@ -27,7 +27,7 @@ export default function App() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   const regenerate = useCallback(() => {
-    const g = autoLayout(mockGenerate(input));
+    const g = mockGenerate(input);
     setGraph(g);
     const r = toRF(g);
     setNodes(r.nodes);
