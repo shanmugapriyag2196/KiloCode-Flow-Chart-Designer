@@ -4,7 +4,7 @@ import type { FlowGraph } from '../models/graph';
 export function autoLayout(graph: FlowGraph): FlowGraph {
   const g = new dagre.graphlib.Graph();
   g.setDefaultEdgeLabel(() => ({}));
-  g.setGraph({ rankdir: 'LR', nodesep: 60, ranksep: 80 });
+  g.setGraph({ rankdir: 'TB', nodesep: 60, ranksep: 80 });
   for (const n of graph.nodes) g.setNode(n.id, { width: 140, height: 60 });
   for (const e of graph.edges) g.setEdge(e.source, e.target);
   dagre.layout(g);
