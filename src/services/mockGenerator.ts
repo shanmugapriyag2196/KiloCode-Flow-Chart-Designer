@@ -1,35 +1,53 @@
 import type { FlowGraph, FlowNode, FlowEdge, NodeType } from '../models/graph';
 
-let counter = 0;
-const id = () => `n${++counter}`;
+export function mockGenerate(_description: string): FlowGraph {
+  const N = (id: string, type: NodeType, label: string): FlowNode => ({ id, type, position: { x: 0, y: 0 }, data: { label } });
+  const E = (id: string, s: string, t: string, label?: string): FlowEdge => ({ id, source: s, target: t, label });
 
-export function mockGenerate(description: string): FlowGraph {
-  counter = 0;
-  const lines = description.split(/\n|;|\./).map(s => s.trim()).filter(Boolean);
-  const nodes: FlowNode[] = [];
-  const edges: FlowEdge[] = [];
-  const start: FlowNode = { id: id(), type: 'start', position: { x: 0, y: 0 }, data: { label: 'Start' } };
-  nodes.push(start);
-  let prev = start.id;
-  for (const line of lines) {
-    const lower = line.toLowerCase();
-    let type: NodeType = 'process';
-    if (lower.includes('decide') || lower.includes('?') || lower.includes('if ')) type = 'decision';
-    if (lower.includes('input') || lower.includes('read')) type = 'inputOutput';
-    const n: FlowNode = { id: id(), type, position: { x: 0, y: 0 }, data: { label: line } };
-    nodes.push(n);
-    edges.push({ id: `e${prev}-${n.id}`, source: prev, target: n.id, label: type === 'decision' ? 'Yes' : undefined });
-    if (type === 'decision') {
-      const endNode: FlowNode = { id: id(), type: 'end', position: { x: 0, y: 0 }, data: { label: 'End (No)' } };
-      nodes.push(endNode);
-      edges.push({ id: `e${n.id}-${endNode.id}`, source: n.id, target: endNode.id, label: 'No' });
-    }
-    prev = n.id;
-  }
-  const end: FlowNode = { id: id(), type: 'end', position: { x: 0, y: 0 }, data: { label: 'End' } };
-  nodes.push(end);
-  edges.push({ id: `e${prev}-${end.id}`, source: prev, target: end.id });
-  // simple vertical layout
-  nodes.forEach((n, i) => { n.position = { x: 250, y: i * 120 }; });
+  const nodes: FlowNode[] = [
+    N('start', 'start', 'Start'),
+    N('s1', 'process', '1. Get email attachment from Outlook and save to Local Folder'),
+    N('s2', 'inputOutput', '2. Amazon Textractor extracts PDF data'),
+    N('s3', 'process', '3. Cenpoint login & PO lookup'),
+    N('d1', 'decision', 'Is there any PO No?'),
+    N('s4', 'notification', '4. Email to Ashley (No PO)'),
+    N('s5', 'process', '5. Aggregate Web App'),
+    N('s6', 'notification', '6. Email to buyer'),
+    N('d2', 'decision', 'Buyer App = Verified?'),
+    N('s7', 'success', '7. Export to local folder'),
+    N('s8', 'notification', '8. Notify manager'),
+    N('s9', 'inputOutput', '9. Lookup PO data'),
+    N('s10', 'process', '10. Validate invoice'),
+    N('s11', 'notification', '11. Send alert email'),
+    N('s12', 'success', '12. Export success'),
+    N('s13', 'inputOutput', '13. Extract line items'),
+    N('s14', 'notification', '14. Email discrepancy'),
+    N('s15', 'success', '15. Load to QuickBooks'),
+    N('end', 'end', 'End'),
+  ];
+
+  const edges: FlowEdge[] = [
+    E('e0', 'start', 's1'),
+    E('e1', 's1', 's2'),
+    E('e2', 's2', 's3'),
+    E('e3', 's3', 'd1'),
+    E('e4', 'd1', 's4', 'No'),
+    E('e5', 'd1', 's5', 'Yes'),
+    E('e6', 's5', 's6'),
+    E('e7', 's6', 'd2'),
+    E('e8', 'd2', 's7', 'Yes'),
+    E('e9', 'd2', 's8', 'No'),
+    E('e10', 's7', 's9'),
+    E('e11', 's9', 's10'),
+    E('e12', 's10', 's11'),
+    E('e13', 's11', 's12'),
+    E('e14', 's12', 's13'),
+    E('e15', 's13', 's14'),
+    E('e16', 's14', 's15'),
+    E('e17', 's15', 'end'),
+    E('e18', 's4', 'end'),
+    E('e19', 's8', 'end'),
+  ];
+
   return { nodes, edges };
 }
