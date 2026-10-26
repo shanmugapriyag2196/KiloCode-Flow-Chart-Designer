@@ -1,11 +1,11 @@
 import { Handle, Position } from '@xyflow/react';
 
-export default function CustomNode({ data, id }: any) {
+export default function CustomNode({ data }: any) {
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '8px 12px', borderRadius: 12, background: data.bg || '#E6F0FF', border: `2px solid ${data.border || '#2B7FFF'}`, minWidth: 220, maxWidth: 300, boxShadow: '0 4px 6px -1px rgba(0,0,0,.05)', fontFamily: 'Inter,system-ui,sans-serif' }}>
+    <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 14px', borderRadius: data.radius === 9999 ? 9999 : (data.radius === 0 ? 0 : 12), clipPath: data.radius === 0 ? 'polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)' : undefined, background: data.bg, border: `2px solid ${data.border}`, minWidth: 260, maxWidth: 320, boxShadow: '0 4px 6px -1px rgba(0,0,0,.05)', fontFamily: 'Inter,system-ui,sans-serif', color: data.text }}>
       <Handle type="target" position={Position.Top} />
-      <div style={{ width: 24, height: 24, borderRadius: '50%', background: data.border || '#2B7FFF', color: '#fff', fontWeight: 700, fontSize: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>{data.badge || id}</div>
-      <div style={{ fontSize: 12, fontWeight: 600, color: '#0A2540', lineHeight: 1.4, textAlign: 'left' }}>{data.label}</div>
+      <div style={{ width: 26, height: 26, borderRadius: '50%', background: data.border, color: '#fff', fontWeight: 700, fontSize: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>{data.badge}</div>
+      <div style={{ fontSize: 13, fontWeight: 600, lineHeight: 1.4, textAlign: 'left' }}>⚙ {data.label}</div>
       <Handle type="source" position={Position.Bottom} />
     </div>
   );
