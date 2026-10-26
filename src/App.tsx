@@ -1,5 +1,5 @@
 import { useState, useCallback, useRef } from 'react';
-import { ReactFlow, applyNodeChanges, applyEdgeChanges, addEdge, Background, type Node, type Edge, type NodeChange, type EdgeChange, type Connection } from '@xyflow/react';
+import { ReactFlow, applyNodeChanges, applyEdgeChanges, addEdge, Background, type Node, type Edge, type NodeChange, type EdgeChange, type Connection, MarkerType } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import { mockGenerate } from './services/mockGenerator';
 import { validateGraph } from './services/validation';
@@ -13,7 +13,7 @@ const nodeTypes = { custom: CustomNode };
 function toRF(graph: FlowGraph): { nodes: Node[]; edges: Edge[] } {
   return {
     nodes: graph.nodes.map((n, i) => ({ id: n.id, type: 'custom', position: n.position, data: { label: n.data.label, bg: NODE_COLORS[n.type] + '22', border: NODE_COLORS[n.type], badge: i + 1 } })),
-    edges: graph.edges.map(e => ({ id: e.id, source: e.source, target: e.target, label: e.label, animated: true, style: { stroke: '#f472b6', strokeWidth: 2 } })),
+    edges: graph.edges.map(e => ({ id: e.id, source: e.source, target: e.target, label: e.label, animated: true, markerEnd: { type: MarkerType.ArrowClosed }, style: { stroke: '#f472b6', strokeWidth: 2 } })),
   };
 }
 
