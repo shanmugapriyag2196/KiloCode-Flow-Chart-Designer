@@ -14,7 +14,7 @@ export function mockGenerate(description: string): FlowGraph {
     const lower = line.toLowerCase();
     const col = Math.floor((counter - 1) / chunk);
     const rowInChunk = (counter - 1) % chunk;
-    const row = col % 2 === 1 ? (chunk - 1 - rowInChunk) : rowInChunk;
+    const row = rowInChunk;
     const x = 200 + col * 320;
     const yy = row * 90;
     let type: NodeType = 'process';
