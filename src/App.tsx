@@ -65,7 +65,7 @@ export default function App() {
         <button onClick={regenerate} style={{ background: '#22c55e', color: '#fff', border: 'none', padding: '6px 12px', borderRadius: 8 }}>Generate</button>
         <button onClick={downloadImage} style={{ background: '#f59e0b', color: '#fff', border: 'none', padding: '6px 12px', borderRadius: 8 }}>⬇ Download PNG</button>
       </div>
-      <div style={{ flex: 1, display: 'flex', gap: 12, padding: 12 }}>
+      <div style={{ flex: 1, display: 'flex', gap: 0, padding: 0 }}>
         <div style={{ width: 300, padding: 12, background: 'rgba(255,255,255,.08)', borderRadius: 12, display: 'flex', flexDirection: 'column', gap: 10, backdropFilter: 'blur(8px)' }}>
           <textarea value={input} onChange={e => setInput(e.target.value)} style={{ flex: 1, borderRadius: 8, border: 'none', padding: 8, color: '#000', background: '#fff' }} />
           <div style={{ color: '#fca5a5', fontSize: 12 }}>{errors.join('; ')}</div>
