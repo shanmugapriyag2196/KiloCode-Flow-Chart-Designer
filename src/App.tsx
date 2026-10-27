@@ -18,20 +18,6 @@ function toRF(graph: FlowGraph): { nodes: Node[]; edges: Edge[] } {
 
 export default function App() {
 const [entered, setEntered] = useState(false);
-  if (!entered) {
-    return (
-      <div style={{ height: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: '#0B192C', color: '#fff', gap: 16 }}>
-        <img src="/Value-Global.png" alt="VG" style={{ height: 48 }} />
-        <h1>VG Dashboard</h1>
-        <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', justifyContent: 'center' }}>
-          <button style={{ padding: '12px 16px', borderRadius: 8 }} onClick={() => alert('PDF to Word')}>PDF to Word Converter</button>
-          <button style={{ padding: '12px 16px', borderRadius: 8 }} onClick={() => setEntered(true)}>Flow Chart Designer</button>
-          <button style={{ padding: '12px 16px', borderRadius: 8 }} onClick={() => alert('Word to PDF')}>Word to PDF Converter</button>
-          <button style={{ padding: '12px 16px', borderRadius: 8 }} onClick={() => alert('Markdown')}>Markdown to Plain Text</button>
-        </div>
-      </div>
-    );
-  }
   const [input, setInput] = useState('Start process\nValidate input\nDecide approval?\nProcess request\nEnd');
   const [graph, setGraph] = useState<FlowGraph>(() => mockGenerate('Start process'));
   const [nodes, setNodes] = useState<Node[]>(() => toRF(graph).nodes);
@@ -73,6 +59,20 @@ const [entered, setEntered] = useState(false);
     a.href = dataUrl; a.download = 'flowchart.png'; a.click();
   };
 
+if (!entered) {
+    return (
+      <div style={{ height: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: '#0B192C', color: '#fff', gap: 16 }}>
+        <img src="/Value-Global.png" alt="VG" style={{ height: 48 }} />
+        <h1>VG Dashboard</h1>
+        <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', justifyContent: 'center' }}>
+          <button style={{ padding: '12px 16px', borderRadius: 8 }} onClick={() => alert('PDF to Word')}>PDF to Word Converter</button>
+          <button style={{ padding: '12px 16px', borderRadius: 8 }} onClick={() => setEntered(true)}>Flow Chart Designer</button>
+          <button style={{ padding: '12px 16px', borderRadius: 8 }} onClick={() => alert('Word to PDF')}>Word to PDF Converter</button>
+          <button style={{ padding: '12px 16px', borderRadius: 8 }} onClick={() => alert('Markdown')}>Markdown to Plain Text</button>
+        </div>
+      </div>
+    );
+  }
   return (
     <div style={{ height: '100vh', display: 'flex', flexDirection: 'column', background: 'linear-gradient(135deg,#0f172a,#1e293b)', color: '#fff' }}>
       <div style={{ padding: 12, background: 'linear-gradient(90deg,#6366f1,#ec4899)', display: 'flex', gap: 10, alignItems: 'center', boxShadow: '0 4px 12px rgba(0,0,0,.3)' }}>
