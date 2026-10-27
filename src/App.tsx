@@ -7,6 +7,7 @@ import { NODE_COLORS } from './models/graph';
 import type { FlowGraph } from './models/graph';
 import CustomNode from './components/CustomNode';
 import { toPng } from 'html-to-image';
+import PDFToWord from './components/PDFToWord';
 const nodeTypes = { custom: CustomNode };
 
 function toRF(graph: FlowGraph): { nodes: Node[]; edges: Edge[] } {
@@ -17,7 +18,7 @@ function toRF(graph: FlowGraph): { nodes: Node[]; edges: Edge[] } {
 }
 
 export default function App() {
-const [entered, setEntered] = useState(false);
+  const [page, setPage] = useState('dashboard');
   const [input, setInput] = useState('Start process\nValidate input\nDecide approval?\nProcess request\nEnd');
   const [graph, setGraph] = useState<FlowGraph>(() => mockGenerate('Start process'));
   const [nodes, setNodes] = useState<Node[]>(() => toRF(graph).nodes);
@@ -42,8 +43,8 @@ const [entered, setEntered] = useState(false);
   const downloadImage = async () => {
     if (!containerRef.current) return;
     const el = containerRef.current;
-    const maxX = Math.max(...nodes.map(n => n.position.x + 200), 800);
-    const maxY = Math.max(...nodes.map(n => n.position.y + 120), 600);
+    const maxX = Math.max(...nodes.map(n => n.position.x + 220), 800);
+    const maxY = Math.max(...nodes.map(n => n.position.y + 90), 600);
     const prevW = el.style.width;
     const prevH = el.style.height;
     const prevO = el.style.overflow;
@@ -59,34 +60,38 @@ const [entered, setEntered] = useState(false);
     a.href = dataUrl; a.download = 'flowchart.png'; a.click();
   };
 
-if (!entered) {
+  if (page === 'dashboard') {
     return (
       <div style={{ height: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: '#0B192C', color: '#fff', gap: 16 }}>
         <img src="/Value-Global.png" alt="VG" style={{ height: 48 }} />
         <h1>VG Dashboard</h1>
         <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', justifyContent: 'center' }}>
-          <button style={{ padding: '12px 16px', borderRadius: 8 }} onClick={() => alert('PDF to Word')}>PDF to Word Converter</button>
-          <button style={{ padding: '12px 16px', borderRadius: 8 }} onClick={() => setEntered(true)}>Flow Chart Designer</button>
+          <button style={{ padding: '12px 16px', borderRadius: 8 }} onClick={() => setPage('pdf')}>PDF to Word Converter</button>
+          <button style={{ padding: '12px 16px', borderRadius: 8 }} onClick={() => setPage('flowchart')}>Flow Chart Designer</button>
           <button style={{ padding: '12px 16px', borderRadius: 8 }} onClick={() => alert('Word to PDF')}>Word to PDF Converter</button>
           <button style={{ padding: '12px 16px', borderRadius: 8 }} onClick={() => alert('Markdown')}>Markdown to Plain Text</button>
         </div>
       </div>
     );
   }
+  if (page === 'pdf') return <PDFToWord />;
+
   return (
     <div style={{ height: '100vh', display: 'flex', flexDirection: 'column', background: 'linear-gradient(135deg,#0f172a,#1e293b)', color: '#fff' }}>
       <div style={{ padding: 12, background: 'linear-gradient(90deg,#6366f1,#ec4899)', display: 'flex', gap: 10, alignItems: 'center', boxShadow: '0 4px 12px rgba(0,0,0,.3)' }}>
-        <strong style={{ fontSize: 18, display: 'flex', alignItems: 'center', gap: 8 }}><img src="/Value-Global.png" alt="VG" style={{ height: 28 }} /> VG Flowchart Designer</strong>
+        <img src="/Value-Global.png" alt="VG" style={{ height: 28 }} />
+        <strong style={{ fontSize: 18 }}>VG Flowchart Designer</strong>
         <button onClick={regenerate} style={{ background: '#22c55e', color: '#fff', border: 'none', padding: '6px 12px', borderRadius: 8 }}>Generate</button>
         <button onClick={downloadImage} style={{ background: '#f59e0b', color: '#fff', border: 'none', padding: '6px 12px', borderRadius: 8 }}>⬇ Download PNG</button>
+        <button onClick={() => setPage('dashboard')} style={{ background: '#64748b', color: '#fff', border: 'none', padding: '6px 12px', borderRadius: 8 }}>Dashboard</button>
       </div>
       <div style={{ flex: 1, display: 'flex', gap: 0, padding: 0 }}>
-        <div style={{ width: 300, padding: 12, background: 'rgba(255,255,255,.08)', borderRadius: 12, display: 'flex', flexDirection: 'column', gap: 10, backdropFilter: 'blur(8px)' }}>
+        <div style={{ width: 300, padding: 12, background: 'rgba(255,255,255,.08)', borderRadius: 0, display: 'flex', flexDirection: 'column', gap: 10, backdropFilter: 'blur(8px)' }}>
           <textarea value={input} onChange={e => setInput(e.target.value)} style={{ flex: 1, borderRadius: 8, border: 'none', padding: 8, color: '#000', background: '#fff' }} />
           <div style={{ color: '#fca5a5', fontSize: 12 }}>{errors.join('; ')}</div>
           {selected && <div style={{ background: 'rgba(255,255,255,.15)', padding: 8, borderRadius: 8 }}><b>Selected:</b> {String((selected.data as any)?.label)}</div>}
         </div>
-        <div style={{ flex: 1, borderRadius: 12, overflow: 'hidden', boxShadow: '0 8px 24px rgba(0,0,0,.4)' }} ref={containerRef}>
+        <div style={{ flex: 1, borderRadius: 0, overflow: 'hidden', boxShadow: '0 8px 24px rgba(0,0,0,.4)' }} ref={containerRef}>
           <ReactFlow nodes={nodes} edges={edges} nodeTypes={nodeTypes} onNodesChange={onNodesChange} onEdgesChange={onEdgesChange} onConnect={onConnect} onNodeClick={(_, n) => setSelected(n)} fitView fitViewOptions={{ maxZoom: 0.75 }} proOptions={{ hideAttribution: true }}>
             <Background />
             <Controls showInteractive={false} />
