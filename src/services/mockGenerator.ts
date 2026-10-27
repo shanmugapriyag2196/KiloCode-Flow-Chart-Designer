@@ -24,19 +24,8 @@ export function mockGenerate(description: string): FlowGraph {
     if (lower.includes('export') || lower.includes('success') || lower.includes('save')) type = 'success';
     nodes.push({ id, type, position: { x, y: yy }, data: { label: `${counter}. ${line}` } });
     edges.push({ id: `e-${prev}-${id}`, source: prev, target: id });
-    if (type === 'decision') {
-      const noId = `${id}-no`;
-      const yesId = `${id}-yes`;
-      nodes.push({ id: noId, type: 'notification', position: { x: 20, y: (y + 1) * 90 }, data: { label: 'No branch' } });
-      nodes.push({ id: yesId, type: 'process', position: { x: 380, y: (y + 1) * 90 }, data: { label: 'Yes branch' } });
-      edges.push({ id: `e-${id}-${noId}`, source: id, target: noId, label: 'No' });
-      edges.push({ id: `e-${id}-${yesId}`, source: id, target: yesId, label: 'Yes' });
-      prev = yesId;
-      y += 2;
-    } else {
-      prev = id;
-      y++;
-    }
+    prev = id;
+    y++;
   }
   nodes.push({ id: 'end', type: 'end', position: { x: 200, y: y * 90 }, data: { label: 'End' } });
   edges.push({ id: `e-${prev}-end`, source: prev, target: 'end' });
