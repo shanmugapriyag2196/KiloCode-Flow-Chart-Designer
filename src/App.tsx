@@ -1,5 +1,5 @@
 import { useState, useCallback, useRef } from 'react';
-import { ReactFlow, applyNodeChanges, applyEdgeChanges, addEdge, Background, type Node, type Edge, type NodeChange, type EdgeChange, type Connection, MarkerType } from '@xyflow/react';
+import { ReactFlow, applyNodeChanges, applyEdgeChanges, addEdge, Background, Controls, type Node, type Edge, type NodeChange, type EdgeChange, type Connection, MarkerType } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import { mockGenerate } from './services/mockGenerator';
 import { validateGraph } from './services/validation';
@@ -89,6 +89,7 @@ if (!entered) {
         <div style={{ flex: 1, borderRadius: 12, overflow: 'hidden', boxShadow: '0 8px 24px rgba(0,0,0,.4)' }} ref={containerRef}>
           <ReactFlow nodes={nodes} edges={edges} nodeTypes={nodeTypes} onNodesChange={onNodesChange} onEdgesChange={onEdgesChange} onConnect={onConnect} onNodeClick={(_, n) => setSelected(n)} fitView fitViewOptions={{ maxZoom: 0.75 }} proOptions={{ hideAttribution: true }}>
             <Background />
+            <Controls showInteractive={false} />
           </ReactFlow>
         </div>
       </div>
