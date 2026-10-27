@@ -12,7 +12,7 @@ const nodeTypes = { custom: CustomNode };
 function toRF(graph: FlowGraph): { nodes: Node[]; edges: Edge[] } {
   return {
     nodes: (() => { let c = 0; return graph.nodes.map((n) => ({ id: n.id, type: 'custom', position: n.position, data: { label: n.data.label, bg: (NODE_COLORS as any)[n.type].bg, border: (NODE_COLORS as any)[n.type].border, text: (NODE_COLORS as any)[n.type].text, radius: (NODE_COLORS as any)[n.type].radius, badge: (n.type === 'start' || n.type === 'end') ? '' : (++c), type: n.type } })); })(),
-    edges: graph.edges.map(e => ({ id: e.id, source: e.source, target: e.target, label: e.label, type: 'smoothstep', animated: true, markerEnd: { type: MarkerType.ArrowClosed }, labelStyle: { fontWeight: 'bold', fontSize: 12 }, labelBgStyle: { fill: '#fff', fillOpacity: 0.9 }, labelBgPadding: [4, 6], style: { stroke: e.label?.toLowerCase() === 'yes' ? '#22c55e' : e.label?.toLowerCase() === 'no' ? '#ef4444' : '#0B192C', strokeWidth: 2 } })),
+    edges: graph.edges.map(e => ({ id: e.id, source: e.source, target: e.target, label: e.label, type: 'smoothstep', animated: true, markerEnd: { type: MarkerType.ArrowClosed }, labelStyle: { fontWeight: 'bold', fontSize: 12 }, labelBgStyle: { fill: '#fff', fillOpacity: 0.9 }, labelBgPadding: [4, 6], style: { stroke: e.label?.toLowerCase() === 'yes' ? '#22c55e' : e.label?.toLowerCase() === 'no' ? '#ef4444' : '#0B192C', strokeWidth: 2, strokeDasharray: '5 5' } })),
   };
 }
 
