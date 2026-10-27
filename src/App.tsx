@@ -7,7 +7,6 @@ import { NODE_COLORS } from './models/graph';
 import type { FlowGraph } from './models/graph';
 import CustomNode from './components/CustomNode';
 import { toPng } from 'html-to-image';
-import PDFToWord from './components/PDFToWord';
 const nodeTypes = { custom: CustomNode };
 
 function toRF(graph: FlowGraph): { nodes: Node[]; edges: Edge[] } {
@@ -18,7 +17,6 @@ function toRF(graph: FlowGraph): { nodes: Node[]; edges: Edge[] } {
 }
 
 export default function App() {
-  const [page, setPage] = useState('dashboard');
   const [input, setInput] = useState('Start process\nValidate input\nDecide approval?\nProcess request\nEnd');
   const [graph, setGraph] = useState<FlowGraph>(() => mockGenerate('Start process'));
   const [nodes, setNodes] = useState<Node[]>(() => toRF(graph).nodes);
@@ -26,64 +24,12 @@ export default function App() {
   const [errors, setErrors] = useState<string[]>([]);
   const [selected, setSelected] = useState<Node | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-
-  const regenerate = useCallback(() => {
-    const g = mockGenerate(input);
-    setGraph(g);
-    const r = toRF(g);
-    setNodes(r.nodes);
-    setEdges(r.edges);
-    setErrors(validateGraph(g).map(e => e.message));
-  }, [input]);
-
-  const onNodesChange = useCallback((c: NodeChange[]) => setNodes(nds => applyNodeChanges(c, nds)), []);
-  const onEdgesChange = useCallback((c: EdgeChange[]) => setEdges(eds => applyEdgeChanges(c, eds)), []);
-  const onConnect = useCallback((conn: Connection) => setEdges(eds => addEdge({ ...conn, id: `e${conn.source}-${conn.target}` }, eds)), []);
-
-  const downloadImage = async () => {
-    if (!containerRef.current) return;
-    const el = containerRef.current;
-    const maxX = Math.max(...nodes.map(n => n.position.x + 220), 800);
-    const maxY = Math.max(...nodes.map(n => n.position.y + 90), 600);
-    const prevW = el.style.width;
-    const prevH = el.style.height;
-    const prevO = el.style.overflow;
-    el.style.overflow = 'visible';
-    el.style.width = maxX + 'px';
-    el.style.height = maxY + 'px';
-    await new Promise(r => setTimeout(r, 400));
-    const dataUrl = await toPng(el, { cacheBust: true, width: maxX, height: maxY });
-    el.style.width = prevW;
-    el.style.height = prevH;
-    el.style.overflow = prevO;
-    const a = document.createElement('a');
-    a.href = dataUrl; a.download = 'flowchart.png'; a.click();
-  };
-
-  if (page === 'dashboard') {
-    return (
-      <div style={{ height: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: '#0B192C', color: '#fff', gap: 16 }}>
-        <img src="/Value-Global.png" alt="VG" style={{ height: 48 }} />
-        <h1>VG Dashboard</h1>
-        <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', justifyContent: 'center' }}>
-          <button style={{ padding: '12px 16px', borderRadius: 8 }} onClick={() => setPage('pdf')}>PDF to Word Converter</button>
-          <button style={{ padding: '12px 16px', borderRadius: 8 }} onClick={() => setPage('flowchart')}>Flow Chart Designer</button>
-          <button style={{ padding: '12px 16px', borderRadius: 8 }} onClick={() => alert('Word to PDF')}>Word to PDF Converter</button>
-          <button style={{ padding: '12px 16px', borderRadius: 8 }} onClick={() => alert('Markdown')}>Markdown to Plain Text</button>
-        </div>
-      </div>
-    );
-  }
-  if (page === 'pdf') return <PDFToWord />;
-
-  return (
     <div style={{ height: '100vh', display: 'flex', flexDirection: 'column', background: 'linear-gradient(135deg,#0f172a,#1e293b)', color: '#fff' }}>
       <div style={{ padding: 12, background: 'linear-gradient(90deg,#6366f1,#ec4899)', display: 'flex', gap: 10, alignItems: 'center', boxShadow: '0 4px 12px rgba(0,0,0,.3)' }}>
         <img src="/Value-Global.png" alt="VG" style={{ height: 28 }} />
         <strong style={{ fontSize: 18 }}>VG Flowchart Designer</strong>
         <button onClick={regenerate} style={{ background: '#22c55e', color: '#fff', border: 'none', padding: '6px 12px', borderRadius: 8 }}>Generate</button>
         <button onClick={downloadImage} style={{ background: '#f59e0b', color: '#fff', border: 'none', padding: '6px 12px', borderRadius: 8 }}>⬇ Download PNG</button>
-        <button onClick={() => setPage('dashboard')} style={{ background: '#64748b', color: '#fff', border: 'none', padding: '6px 12px', borderRadius: 8 }}>Dashboard</button>
       </div>
       <div style={{ flex: 1, display: 'flex', gap: 0, padding: 0 }}>
         <div style={{ width: 300, padding: 12, background: 'rgba(255,255,255,.08)', borderRadius: 0, display: 'flex', flexDirection: 'column', gap: 10, backdropFilter: 'blur(8px)' }}>
