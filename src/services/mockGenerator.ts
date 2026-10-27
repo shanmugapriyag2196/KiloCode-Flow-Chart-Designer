@@ -10,6 +10,7 @@ export function mockGenerate(description: string): FlowGraph {
   const chunk = 5;
   for (const line of lines) {
     counter++;
+    const id = `s${counter}`;
     const lower = line.toLowerCase();
     const col = Math.floor((counter - 1) / chunk);
     const rowInChunk = (counter - 1) % chunk;
