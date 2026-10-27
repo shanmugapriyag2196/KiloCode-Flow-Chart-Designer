@@ -24,6 +24,41 @@ export default function App() {
   const [errors, setErrors] = useState<string[]>([]);
   const [selected, setSelected] = useState<Node | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  const regenerate = useCallback(() => {
+    const g = mockGenerate(input);
+    setGraph(g);
+    const r = toRF(g);
+    setNodes(r.nodes);
+    setEdges(r.edges);
+    setErrors(validateGraph(g).map(e => e.message));
+  }, [input]);
+
+  const onNodesChange = useCallback((c: NodeChange[]) => setNodes(nds => applyNodeChanges(c, nds)), []);
+  const onEdgesChange = useCallback((c: EdgeChange[]) => setEdges(eds => applyEdgeChanges(c, eds)), []);
+  const onConnect = useCallback((conn: Connection) => setEdges(eds => addEdge({ ...conn, id: `e${conn.source}-${conn.target}` }, eds)), []);
+
+  const downloadImage = async () => {
+    if (!containerRef.current) return;
+    const el = containerRef.current;
+    const maxX = Math.max(...nodes.map(n => n.position.x + 220), 800);
+    const maxY = Math.max(...nodes.map(n => n.position.y + 90), 600);
+    const prevW = el.style.width;
+    const prevH = el.style.height;
+    const prevO = el.style.overflow;
+    el.style.overflow = 'visible';
+    el.style.width = maxX + 'px';
+    el.style.height = maxY + 'px';
+    await new Promise(r => setTimeout(r, 400));
+    const dataUrl = await toPng(el, { cacheBust: true, width: maxX, height: maxY });
+    el.style.width = prevW;
+    el.style.height = prevH;
+    el.style.overflow = prevO;
+    const a = document.createElement('a');
+    a.href = dataUrl; a.download = 'flowchart.png'; a.click();
+  };
+
+  return (
     <div style={{ height: '100vh', display: 'flex', flexDirection: 'column', background: 'linear-gradient(135deg,#0f172a,#1e293b)', color: '#fff' }}>
       <div style={{ padding: 12, background: 'linear-gradient(90deg,#6366f1,#ec4899)', display: 'flex', gap: 10, alignItems: 'center', boxShadow: '0 4px 12px rgba(0,0,0,.3)' }}>
         <img src="/Value-Global.png" alt="VG" style={{ height: 28 }} />
@@ -46,3 +81,4 @@ export default function App() {
       </div>
     </div>
   );
+}
