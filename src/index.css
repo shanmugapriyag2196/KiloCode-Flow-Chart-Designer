@@ -51,6 +51,7 @@
 }
 
 .react-flow__controls button { color: #000 !important; background: #fff !important; }
+#root {
   width: 100%;
   max-width: none;
   margin: 0;
