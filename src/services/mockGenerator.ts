@@ -27,7 +27,6 @@ export function mockGenerate(description: string): FlowGraph {
     prev = id;
     y++;
   }
-  nodes.push({ id: 'end', type: 'end', position: { x: 200, y: y * 90 }, data: { label: 'End' } });
-  edges.push({ id: `e-${prev}-end`, source: prev, target: 'end' });
+
   return { nodes, edges };
 }
